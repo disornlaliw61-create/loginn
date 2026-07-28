@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f4f4f4;
+    overflow: hidden;
+}
+
+/* พื้นหลังโค้ง */
+.background-shape {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    background: linear-gradient(135deg, #ff4fa3, #7a5cff);
+    border-radius: 50%;
+    top: -200px;
+    right: -200px;
+}
+
+.background-circle1 {
+    position: absolute;
+    width: 250px;
+    height: 250px;
+    background: #4fc3f7;
+    border-radius: 50%;
+    right: -100px;
+    bottom: 100px;
+}
+
+.background-circle2 {
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    background: #ffc107;
+    border-radius: 50%;
+    right: 100px;
+    bottom: 200px;
+}
+
+.container {
+    position: relative;
+    z-index: 2;
+    width: 350px;
+    margin: 120px auto;
+    text-align: center;
+}
+
+h1 {
+    color: #4a4a4a;
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: none;
+    border-bottom: 2px solid #ccc;
+    background: transparent;
+    font-size: 16px;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 20px;
+    border: none;
+    border-radius: 25px;
+    font-size: 16px;
+    color: white;
+    cursor: pointer;
+    background: linear-gradient(90deg, #ff4fa3, #7a5cff);
+}
+
+button:hover {
+    opacity: 0.9;
+}
+
+#error {
+    color: red;
+    margin-top: 10px;
+    display: none;
+}
+
+#success {
+    color: green;
+    margin-top: 10px;
+    display: none;
+}
+</style>
+</head>
+
+<body>
+
+<div class="background-shape"></div>
+<div class="background-circle1"></div>
+<div class="background-circle2"></div>
+
+<div class="container">
+    <h1>Login</h1>
+    <form id="loginForm">
+        <input type="text" id="username" placeholder="Username" required>
+        <input type="password" id="password" placeholder="Password" required>
+        <button type="submit">Continue</button>
+        <div id="error">รหัสผ่านไม่ถูกต้อง!</div>
+        <div id="success"></div>
+    </form>
+</div>
+
+<script>
+const correctPassword = "27012008"; // 🔐 เปลี่ยนรหัสตรงนี้
+const redirectURL = "https://disornlaliw61-create.github.io/menu/"; // 🌐 เปลี่ยนเว็บปลายทางตรงนี้
+const delayTime = 1; // ⏳ เวลาหน่วง (วินาที)
+
+document.getElementById("loginForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const password = document.getElementById("password").value;
+    const error = document.getElementById("error");
+    const success = document.getElementById("success");
+
+    error.style.display = "none";
+
+    if (password === correctPassword) {
+
+        let countdown = delayTime;
+        success.style.display = "block";
+        success.innerHTML = "เข้าสู่ระบบสำเร็จ! กำลังเปลี่ยนหน้าใน " + countdown + " วินาที...";
+
+        const timer = setInterval(() => {
+            countdown--;
+            success.innerHTML = "เข้าสู่ระบบสำเร็จ! กำลังเปลี่ยนหน้าใน " + countdown + " วินาที...";
+
+            if (countdown <= 0) {
+                clearInterval(timer);
+                window.location.href = redirectURL;
+            }
+
+        }, 1000);
+
+    } else {
+        error.style.display = "block";
+    }
+});
+</script>
+
+</body>
+</html>
