@@ -1,61 +1,278 @@
-let isRotatedRight = false;
+/* =====================================================
+   ตั้งค่า Username / Password
+===================================================== */
 
-// ข้อมูลสำหรับตรวจสอบล็อกอิน (สามารถกำหนดตามที่ต้องการได้)
-const VALID_USERNAME = "kay";
-const VALID_PASSWORD = "27012008";
-const TARGET_URL = "https://disornlaliw61-create.github.io/menu/"; // เว็บไซต์เป้าหมายที่จะเปลี่ยนหน้าไป
+const LOGIN_USERNAME = "kay";
+const LOGIN_PASSWORD = "27012008";
 
-document.addEventListener('DOMContentLoaded', () => {
-    const gearBtn = document.getElementById('gear-btn');
-    const gearIcon = document.querySelector('.gear-icon');
-    const step1 = document.getElementById('step-1');
-    const step2 = document.getElementById('step-2');
 
-    // คลิกฟันเฟือง -> หมุนสลับไปทางซ้าย/ขวา แล้วเปลี่ยนหน้าไปรูปที่ 2
-    gearBtn.addEventListener('click', () => {
-        if (!isRotatedRight) {
-            gearIcon.classList.remove('rotate-left');
-            gearIcon.classList.add('rotate-right');
-            isRotatedRight = true;
-        } else {
-            gearIcon.classList.remove('rotate-right');
-            gearIcon.classList.add('rotate-left');
-            isRotatedRight = false;
+/* =====================================================
+   เปลี่ยนหน้า
+===================================================== */
+
+function showPage(pageId) {
+
+    document
+        .querySelectorAll(".page")
+        .forEach(function(page) {
+
+            page.classList.remove("active");
+
+        });
+
+    document
+        .getElementById(pageId)
+        .classList.add("active");
+}
+
+
+/* =====================================================
+   กด CPU สีฟ้า
+===================================================== */
+
+function startSystem() {
+
+    const cpu =
+        document.getElementById("cpu");
+
+    // ป้องกันการกดซ้ำขณะกำลังหมุน
+    if (cpu.classList.contains("rotate")) {
+        return;
+    }
+
+    // รีเซ็ต Animation
+    cpu.classList.remove("rotate");
+
+    void cpu.offsetWidth;
+
+    // เริ่มหมุน
+    cpu.classList.add("rotate");
+
+
+    // หมุนเสร็จแล้วเข้าสู่หน้า Login
+    setTimeout(function() {
+
+        cpu.classList.remove("rotate");
+
+        showPage("page2");
+
+        document
+            .getElementById("username")
+            .focus();
+
+    }, 2000);
+}
+
+
+/* =====================================================
+   ระบบ LOGIN
+===================================================== */
+
+document
+    .getElementById("loginForm")
+    .addEventListener(
+        "submit",
+        function(event) {
+
+            // ป้องกันหน้าเว็บ Refresh
+            event.preventDefault();
+
+
+            const username =
+                document
+                    .getElementById("username")
+                    .value
+                    .trim();
+
+
+            const password =
+                document
+                    .getElementById("password")
+                    .value;
+
+
+            const message =
+                document
+                    .getElementById("loginMessage");
+
+
+            // ตรวจสอบ Username และ Password
+            if (
+                username === LOGIN_USERNAME &&
+                password === LOGIN_PASSWORD
+            ) {
+
+                message.style.color =
+                    "#00ffb7";
+
+                message.innerHTML =
+                    "✓ Login สำเร็จ กำลังเข้าสู่ระบบ...";
+
+
+                // เข้าหน้า Website Portal
+                setTimeout(function() {
+
+                    showPage("page3");
+
+                    document
+                        .getElementById("websiteURL")
+                        .focus();
+
+                }, 700);
+
+            }
+
+            else {
+
+                message.style.color =
+                    "#ff5577";
+
+                message.innerHTML =
+                    "✕ ชื่อผู้ใช้งานหรือรหัสผ่านไม่ถูกต้อง";
+
+
+                document
+                    .getElementById("password")
+                    .select();
+
+            }
+
+        }
+    );
+
+
+/* =====================================================
+   เปิดเว็บไซต์
+===================================================== */
+
+function openWebsite() {
+
+    const input =
+        document
+            .getElementById("websiteURL");
+
+
+    const message =
+        document
+            .getElementById("urlMessage");
+
+
+    let url =
+        input.value.trim();
+
+
+    // ตรวจสอบว่ามี URL หรือไม่
+    if (!url) {
+
+        message.innerHTML =
+            "กรุณาใส่ลิงก์เว็บไซต์";
+
+        return;
+    }
+
+
+    // ถ้าไม่ได้ใส่ https:// ให้เติมให้
+    if (
+        !url.startsWith("http://") &&
+        !url.startsWith("https://")
+    ) {
+
+        url =
+            "https://" + url;
+    }
+
+
+    try {
+
+        const parsedURL =
+            new URL(url);
+
+
+        // อนุญาตเฉพาะ HTTP / HTTPS
+        if (
+            parsedURL.protocol !== "http:" &&
+            parsedURL.protocol !== "https:"
+        ) {
+
+            throw new Error();
+
         }
 
-        // รอแอนิเมชันหมุน 0.6 วินาที แล้วสลับหน้า
-        setTimeout(() => {
-            step1.classList.remove('active');
-            step1.classList.add('hidden');
-            
-            step2.classList.remove('hidden');
-            step2.classList.add('active');
-        }, 600);
-    });
-});
 
-// ฟังก์ชันดึงข้อมูลมาตรวจสอบรหัสผ่าน
-function handleLogin(event) {
-    event.preventDefault(); // ป้องกันการเปลี่ยนหน้าแบบปกติของฟอร์ม
+        message.innerHTML =
+            "กำลังเปิดเว็บไซต์...";
 
-    const usernameInput = document.getElementById('username').value;
-    const passwordInput = document.getElementById('password').value;
-    const errorMsg = document.getElementById('error-msg');
 
-    // ตรวจสอบชื่อผู้ใช้งานและรหัสผ่าน
-    if (usernameInput === VALID_USERNAME && passwordInput === VALID_PASSWORD) {
-        // ถ้ารหัสถูกต้อง
-        errorMsg.style.display = 'none';
-        alert('เข้าสู่ระบบสำเร็จ! กำลังนำคุณไปยังหน้าถัดไป...');
-        window.location.href = TARGET_URL; // เปลี่ยนหน้าไปยังลิงก์เว็บเป้าหมาย
-    } else {
-        // ถ้ารหัสผ่านไม่ถูกต้อง จะไม่อนุญาตให้เข้าระบบ
-        errorMsg.style.display = 'block';
-        
-        // เพิ่มเอฟเฟกต์สั่นเตือนที่ช่องรหัสผ่าน
-        const passInput = document.getElementById('password');
-        passInput.style.borderColor = '#ff3333';
-        passInput.value = ''; // ล้างช่องรหัสผ่าน
-        passInput.focus();
+        // เปิดเว็บไซต์แท็บใหม่
+        window.open(
+            parsedURL.href,
+            "_blank",
+            "noopener,noreferrer"
+        );
+
     }
+
+    catch (error) {
+
+        message.innerHTML =
+            "ลิงก์ไม่ถูกต้อง กรุณาตรวจสอบอีกครั้ง";
+
+    }
+}
+
+
+/* =====================================================
+   กด ENTER ในช่อง URL
+===================================================== */
+
+function urlEnter(event) {
+
+    if (event.key === "Enter") {
+
+        event.preventDefault();
+
+        openWebsite();
+
+    }
+}
+
+
+/* =====================================================
+   LOGOUT
+===================================================== */
+
+function logout() {
+
+    // ล้าง Username
+    document
+        .getElementById("username")
+        .value = "";
+
+
+    // ล้าง Password
+    document
+        .getElementById("password")
+        .value = "";
+
+
+    // ล้าง URL
+    document
+        .getElementById("websiteURL")
+        .value = "";
+
+
+    // ล้างข้อความ Login
+    document
+        .getElementById("loginMessage")
+        .innerHTML = "";
+
+
+    // ล้างข้อความ URL
+    document
+        .getElementById("urlMessage")
+        .innerHTML = "";
+
+
+    // กลับหน้าแรก
+    showPage("page1");
 }
