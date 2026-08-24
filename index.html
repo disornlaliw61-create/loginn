@@ -3,553 +3,297 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tech Login - PC Fan & Cyber Robot</title>
-    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;600;700&display=swap" rel="stylesheet">
+    <title>Futuristic Tech Login</title>
+    <!-- Font Awesome สำหรับไอคอน -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- ฝ่าย CSS ทำงานร่วมกับ HTML โดยตรง -->
     <style>
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
             font-family: 'Kanit', sans-serif;
         }
 
         body {
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            background-color: #050814;
             overflow: hidden;
+            background-color: #0b0f19;
         }
 
-        /* Container หลักพร้อมลายเส้น Tech Grid ด้านหลัง */
-        .screen-container {
-            width: 1000px;
-            height: 562px;
-            position: relative;
-            background: linear-gradient(135deg, #0b1021 0%, #111836 100%);
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 0 50px rgba(0, 229, 255, 0.25), 0 20px 50px rgba(0,0,0,0.8);
-            border: 1px solid rgba(0, 229, 255, 0.3);
+        /* พื้นหลังเทคโนโลยีแบบ Futuristic */
+        .tech-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, #2b4c7e 0%, #0a1128 100%);
+            z-index: -1;
         }
 
-        /* ลายเส้นพื้นหลัง Sci-Fi Grid */
-        .screen-container::before {
-            content: "";
+        .tech-bg::before {
+            content: '';
             position: absolute;
             width: 100%;
             height: 100%;
             background-image: 
-                linear-gradient(rgba(0, 229, 255, 0.07) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 229, 255, 0.07) 1px, transparent 1px);
-            background-size: 30px 30px;
-            z-index: 0;
+                linear-gradient(rgba(0, 212, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 212, 255, 0.1) 1px, transparent 1px);
+            background-size: 40px 40px;
         }
 
-        /* ==================== หน้า 1: PC FAN PAGE ==================== */
-        #page-1 {
-            width: 100%;
-            height: 100%;
+        .container {
+            position: relative;
+            width: 900px;
+            height: 500px;
             display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .card-step {
             position: absolute;
-            top: 0;
-            left: 0;
             transition: opacity 0.6s ease, transform 0.6s ease;
-            z-index: 2;
         }
 
-        .p1-left {
-            width: 65%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-            z-index: 2;
+        .card-step.hidden {
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(0.9);
         }
 
-        .p1-right {
-            width: 35%;
-            height: 100%;
-            background: rgba(15, 23, 42, 0.85);
-            backdrop-filter: blur(10px);
-            clip-path: polygon(20% 0, 100% 0, 100% 100%, 0 100%, 0 20%);
-            position: relative;
-            border-left: 2px solid #00e5ff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: -10px 0 30px rgba(0, 229, 255, 0.2);
-            z-index: 2;
+        .card-step.active {
+            opacity: 1;
+            pointer-events: all;
+            transform: scale(1);
         }
 
-        /* Hexagon Frame */
+        /* --- หน้า 1: ลูกฟันเฟืองตรงกลาง --- */
         .hexagon-wrapper {
-            width: 340px;
-            height: 380px;
-            background: rgba(10, 15, 30, 0.9);
+            cursor: pointer;
+        }
+
+        .hexagon {
+            width: 260px;
+            height: 290px;
+            background: #c2c9d6;
             clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
             display: flex;
             justify-content: center;
             align-items: center;
-            position: relative;
-            z-index: 5;
-            border: 2px solid #00e5ff;
-            box-shadow: inset 0 0 30px rgba(0, 229, 255, 0.3);
+            border: 8px solid #000;
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.4);
         }
 
-        /* ==================== พัดลมคอมพิวเตอร์ (RGB PC FAN) ==================== */
-        .fan-btn {
-            width: 250px;
-            height: 250px;
-            border-radius: 50%;
-            position: relative;
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            user-select: none;
-            padding: 8px;
-            background: linear-gradient(45deg, #ff0055, #00e5ff, #7000ff, #ff0055);
-            background-size: 300% 300%;
-            animation: rgbBorder 6s linear infinite;
-            box-shadow: 0 0 25px rgba(0, 229, 255, 0.5);
-        }
-
-        @keyframes rgbBorder {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        .fan-frame {
-            width: 100%;
-            height: 100%;
-            background-color: #090d16;
-            border-radius: 50%;
+        .gear-container {
             position: relative;
             display: flex;
             justify-content: center;
             align-items: center;
+        }
+
+        .gear-icon {
+            font-size: 170px;
+            color: #1a1a1a;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .gear-text {
+            position: absolute;
+            font-weight: bold;
+            font-size: 24px;
+            color: #1a1a1a;
+            background: #c2c9d6;
+            padding: 10px 15px;
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        /* เอฟเฟกต์หมุนซ้าย - ขวา */
+        .rotate-right {
+            transform: rotate(180deg);
+        }
+
+        .rotate-left {
+            transform: rotate(-180deg);
+        }
+
+        /* --- หน้า 2: ฟอร์มล็อกอิน --- */
+        .login-panel {
+            width: 850px;
+            height: 480px;
+            display: flex;
+            border-radius: 20px;
             overflow: hidden;
-            border: 3px solid #1e293b;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
         }
 
-        .fan-blades {
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            transform-origin: center center;
-            transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        .blade {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 90px;
-            height: 35px;
-            background: linear-gradient(90deg, rgba(255,255,255,0.1) 0%, rgba(0,229,255,0.4) 100%);
-            border-radius: 50% 10% 50% 10%;
-            transform-origin: 0% 0%;
-            border: 1px solid rgba(0, 229, 255, 0.5);
-        }
-
-        .blade:nth-child(1) { transform: rotate(0deg) translate(5px, -50%); }
-        .blade:nth-child(2) { transform: rotate(51.4deg) translate(5px, -50%); }
-        .blade:nth-child(3) { transform: rotate(102.8deg) translate(5px, -50%); }
-        .blade:nth-child(4) { transform: rotate(154.2deg) translate(5px, -50%); }
-        .blade:nth-child(5) { transform: rotate(205.6deg) translate(5px, -50%); }
-        .blade:nth-child(6) { transform: rotate(257deg) translate(5px, -50%); }
-        .blade:nth-child(7) { transform: rotate(308.4deg) translate(5px, -50%); }
-
-        .fan-center {
-            width: 110px;
-            height: 110px;
-            background: radial-gradient(circle, #1e293b 0%, #0f172a 100%);
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 10;
-            border: 2px solid #00e5ff;
-            box-shadow: 0 0 15px rgba(0, 229, 255, 0.6), inset 0 0 10px rgba(0,0,0,0.8);
-            pointer-events: none;
-        }
-
-        .fan-text {
-            font-size: 26px;
-            font-weight: 700;
-            color: #ffffff;
-            letter-spacing: 2px;
-            text-shadow: 0 0 10px #00e5ff;
-        }
-
-        /* ==================== หุ่นยนต์ขยับได้ (CYBER ROBOT) ==================== */
-        .robot-container {
-            width: 160px;
-            height: 220px;
-            position: relative;
+        .form-side {
+            flex: 1.2;
+            background: #446bf2;
+            padding: 40px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            animation: robotFloat 3s ease-in-out infinite;
-        }
-
-        @keyframes robotFloat {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-12px); }
-        }
-
-        .robot-head {
-            width: 90px;
-            height: 70px;
-            background: linear-gradient(135deg, #1e293b, #0f172a);
-            border: 2px solid #00e5ff;
-            border-radius: 18px;
-            position: relative;
-            display: flex;
             justify-content: center;
-            align-items: center;
-            box-shadow: 0 0 15px rgba(0, 229, 255, 0.3);
         }
 
-        .robot-antenna {
-            width: 4px;
-            height: 15px;
-            background: #00e5ff;
-            position: absolute;
-            top: -15px;
-        }
-        .robot-antenna::after {
-            content: "";
-            position: absolute;
-            top: -6px;
-            left: -4px;
-            width: 12px;
-            height: 12px;
-            background: #ff0055;
-            border-radius: 50%;
-            box-shadow: 0 0 8px #ff0055;
-        }
-
-        .robot-eyes {
-            display: flex;
-            gap: 20px;
-        }
-        .eye {
-            width: 18px;
-            height: 14px;
-            background: #00e5ff;
-            border-radius: 4px;
-            box-shadow: 0 0 10px #00e5ff;
-            animation: blink 4s infinite;
-        }
-
-        @keyframes blink {
-            0%, 90%, 100% { transform: scaleY(1); }
-            95% { transform: scaleY(0.1); }
-        }
-
-        .robot-body {
-            width: 110px;
-            height: 90px;
-            background: linear-gradient(135deg, #1e293b, #0f172a);
-            border: 2px solid #00e5ff;
-            border-radius: 12px;
-            margin-top: 8px;
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 0 15px rgba(0, 229, 255, 0.2);
-        }
-
-        .robot-core {
-            width: 35px;
-            height: 35px;
-            background: radial-gradient(circle, #ff0055 0%, #7000ff 100%);
-            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
-            animation: corePulse 1.5s ease-in-out infinite alternate;
-        }
-
-        @keyframes corePulse {
-            0% { transform: scale(0.8); box-shadow: 0 0 5px #ff0055; }
-            100% { transform: scale(1.1); box-shadow: 0 0 20px #ff0055; }
-        }
-
-        /* ==================== หน้า 2: FORM PAGE ==================== */
-        #page-2 {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            position: absolute;
-            top: 0;
-            left: 0;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.6s ease;
-            z-index: 1;
-        }
-
-        .p2-left {
-            width: 65%;
-            height: 100%;
-            padding: 40px 60px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 2;
-        }
-
-        .welcome-badge {
-            background: linear-gradient(90deg, #00e5ff, #7000ff);
-            color: #ffffff;
-            font-size: 36px;
-            font-weight: 700;
-            padding: 10px 0;
-            width: 400px;
-            text-align: center;
-            border-radius: 50px;
+        .welcome-header {
+            background: #ffffff;
+            color: #000;
+            font-size: 28px;
+            font-weight: bold;
+            padding: 12px 60px;
+            border-radius: 40px;
             margin-bottom: 25px;
-            box-shadow: 0 0 20px rgba(0, 229, 255, 0.4);
-            letter-spacing: 1px;
         }
 
-        .login-form {
+        #login-form {
             width: 100%;
-            max-width: 450px;
             display: flex;
             flex-direction: column;
+            align-items: center;
             gap: 15px;
         }
 
-        .input-field {
+        .input-group {
+            width: 90%;
+        }
+
+        .input-group input {
             width: 100%;
-            height: 60px;
-            background: rgba(15, 23, 42, 0.8);
-            border: 1px solid rgba(0, 229, 255, 0.4);
+            padding: 16px 25px;
             border-radius: 30px;
-            padding: 0 30px;
-            font-size: 20px;
-            color: #ffffff;
+            border: 2px solid transparent;
+            background: #cdd9ff;
+            font-size: 18px;
+            color: #333;
             outline: none;
-            transition: all 0.3s;
+            transition: 0.3s;
         }
 
-        .input-field:focus {
-            border-color: #00e5ff;
-            box-shadow: 0 0 15px rgba(0, 229, 255, 0.5);
-            background: rgba(15, 23, 42, 0.95);
+        .input-group input:focus {
+            border-color: #00d4ff;
+            box-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
         }
 
-        .input-field.error-border {
-            border-color: #ff0055;
-            box-shadow: 0 0 15px rgba(255, 0, 85, 0.6);
+        .input-group input::placeholder {
+            color: #555;
         }
 
-        .input-field::placeholder {
-            color: #64748b;
-        }
-
-        /* ข้อความแจ้งเตือนข้อผิดพลาด */
+        /* กล่องข้อความแจ้งเตือนรหัสผิด */
         .error-message {
-            color: #ff0055;
-            font-size: 16px;
-            font-weight: 600;
-            text-align: center;
-            min-height: 24px;
-            text-shadow: 0 0 8px rgba(255, 0, 85, 0.5);
-            visibility: hidden;
+            color: #ff3333;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 6px 15px;
+            border-radius: 15px;
+            font-size: 14px;
+            font-weight: bold;
+            display: none; /* ซ่อนไว้ก่อน */
         }
 
-        .error-message.show {
-            visibility: visible;
-            animation: shake 0.3s ease-in-out;
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            20%, 60% { transform: translateX(-8px); }
-            40%, 80% { transform: translateX(8px); }
-        }
-
-        .submit-btn {
-            width: 100%;
-            height: 60px;
-            background: linear-gradient(90deg, #00e5ff 0%, #0088ff 100%);
-            color: #000;
+        .btn-login {
+            margin-top: 10px;
+            padding: 12px 45px;
+            border-radius: 25px;
             border: none;
-            border-radius: 30px;
-            font-size: 22px;
-            font-weight: 700;
+            background: #00d4ff;
+            color: #000;
+            font-size: 18px;
+            font-weight: bold;
             cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 0 15px rgba(0, 229, 255, 0.4);
+            transition: 0.3s;
         }
 
-        .submit-btn:hover {
-            box-shadow: 0 0 25px rgba(0, 229, 255, 0.8);
-            transform: translateY(-2px);
+        .btn-login:hover {
+            background: #ffffff;
+            box-shadow: 0 0 15px #00d4ff;
         }
 
-        .p2-right {
-            width: 35%;
-            height: 100%;
-            background: rgba(15, 23, 42, 0.85);
-            backdrop-filter: blur(10px);
-            border-top-left-radius: 60px;
-            border-bottom-left-radius: 60px;
+        .graphic-side {
+            flex: 0.8;
+            background: #ffffff;
             display: flex;
             justify-content: center;
             align-items: center;
-            border-left: 2px solid #00e5ff;
-            z-index: 2;
+            border-top-right-radius: 60px;
         }
 
-        /* Class สลับหน้า */
-        .active-page-2 #page-1 {
-            opacity: 0;
-            pointer-events: none;
+        .avatar-circle {
+            width: 220px;
+            height: 220px;
+            background: #eef2f7;
+            border-radius: 50%;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
-        .active-page-2 #page-2 {
-            opacity: 1;
-            pointer-events: all;
+        .laptop-icon {
+            font-size: 100px;
+            color: #1d3557;
+        }
+
+        .lock-icon {
+            position: absolute;
+            right: 35px;
+            bottom: 50px;
+            font-size: 40px;
+            color: #f4a261;
         }
     </style>
 </head>
 <body>
 
-    <div class="screen-container" id="app">
-        
-        <!-- หน้าที่ 1: PC FAN & ROBOT PAGE -->
-        <div id="page-1">
-            <div class="p1-left">
-                <div class="hexagon-wrapper">
-                    <div class="fan-btn" onclick="rotateAndSwitch()">
-                        <div class="fan-frame">
-                            <div class="fan-blades" id="fanBlades">
-                                <div class="blade"></div>
-                                <div class="blade"></div>
-                                <div class="blade"></div>
-                                <div class="blade"></div>
-                                <div class="blade"></div>
-                                <div class="blade"></div>
-                                <div class="blade"></div>
-                            </div>
-                            <div class="fan-center">
-                                <span class="fan-text">LOGIN</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <div class="tech-bg"></div>
 
-            <div class="p1-right">
-                <div class="robot-container">
-                    <div class="robot-head">
-                        <div class="robot-antenna"></div>
-                        <div class="robot-eyes">
-                            <div class="eye"></div>
-                            <div class="eye"></div>
-                        </div>
-                    </div>
-                    <div class="robot-body">
-                        <div class="robot-core"></div>
+    <div class="container">
+        <!-- หน้าที่ 1: หน้าลูกฟันเฟือง -->
+        <div id="step-1" class="card-step active">
+            <div class="hexagon-wrapper" id="gear-btn">
+                <div class="hexagon">
+                    <div class="gear-container">
+                        <i class="fa-solid fa-gear gear-icon"></i>
+                        <span class="gear-text">LOGIN</span>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- หน้าที่ 2: FORM PAGE -->
-        <div id="page-2">
-            <div class="p2-left">
-                <div class="welcome-badge">ยินดีต้อนรับ</div>
-                <form class="login-form" id="loginForm" onsubmit="handleLogin(event)">
-                    <input type="text" class="input-field" placeholder="ชื่อผู้ใช้งาน" required id="usernameInput">
-                    <input type="password" class="input-field" placeholder="รหัสผ่าน" required id="passwordInput">
-                    
-                    <!-- ส่วนแสดงข้อความเตือนเวลากรอกผิด -->
-                    <div class="error-message" id="errorMsg">ชื่อผู้ใช้งานหรือรหัสผ่านไม่ถูกต้อง!</div>
-                    
-                    <button type="submit" class="submit-btn">เข้าสู่ระบบ</button>
-                </form>
-            </div>
-            <div class="p2-right">
-                <div class="robot-container">
-                    <div class="robot-head">
-                        <div class="robot-antenna"></div>
-                        <div class="robot-eyes">
-                            <div class="eye"></div>
-                            <div class="eye"></div>
+        <!-- หน้าที่ 2: ฟอร์มล็อกอิน -->
+        <div id="step-2" class="card-step hidden">
+            <div class="login-panel">
+                <div class="form-side">
+                    <div class="welcome-header">ยินดีต้อนรับ</div>
+                    <form id="login-form" onsubmit="handleLogin(event)">
+                        <div class="input-group">
+                            <input type="text" id="username" placeholder="ชื่อผู้ใช้งาน" required>
                         </div>
-                    </div>
-                    <div class="robot-body">
-                        <div class="robot-core"></div>
+                        <div class="input-group">
+                            <input type="password" id="password" placeholder="รหัสผ่าน" required>
+                        </div>
+                        <!-- แสดงข้อความเมื่อรหัสผ่านผิด -->
+                        <div id="error-msg" class="error-message">ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง!</div>
+
+                        <!-- รองรับทั้งการคลิกปุ่ม และกด Enter บนคีย์บอร์ด -->
+                        <button type="submit" class="btn-login">เข้าสู่ระบบ</button>
+                    </form>
+                </div>
+                <div class="graphic-side">
+                    <div class="avatar-circle">
+                        <i class="fa-solid fa-laptop-code laptop-icon"></i>
+                        <i class="fa-solid fa-lock lock-icon"></i>
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
 
-    <script>
-        // กำหนดข้อมูล Username และ Password ที่ถูกต้อง
-        const CORRECT_USER = "kay;
-        const CORRECT_PASS = "27012008";
-
-        const fanBlades = document.getElementById('fanBlades');
-        const app = document.getElementById('app');
-        const usernameInput = document.getElementById('usernameInput');
-        const passwordInput = document.getElementById('passwordInput');
-        const errorMsg = document.getElementById('errorMsg');
-        let isRotating = false;
-
-        function rotateAndSwitch() {
-            if (isRotating) return;
-            isRotating = true;
-
-            fanBlades.style.transform = 'rotate(-180deg)';
-
-            setTimeout(() => {
-                fanBlades.style.transform = 'rotate(720deg)';
-            }, 250);
-
-            setTimeout(() => {
-                app.classList.add('active-page-2');
-                usernameInput.focus();
-            }, 850);
-        }
-
-        // ฟังก์ชันตรวจสอบความถูกต้องก่อนสลับหน้าไปยัง URL ปลายทาง
-        function handleLogin(event) {
-            event.preventDefault(); // ป้องกันการเปลี่ยนหน้าแบบปกติ
-            
-            const username = usernameInput.value.trim();
-            const password = passwordInput.value.trim();
-
-            // ตรวจสอบว่าตรงกับ Username และ Password ที่กำหนดไว้หรือไม่
-            if (username === CORRECT_USER && password === CORRECT_PASS) {
-                // รหัสถูกต้อง: ล้างข้อความเตือน และเปลี่ยนไปยัง URL ปลายทาง
-                errorMsg.classList.remove('show');
-                usernameInput.classList.remove('error-border');
-                passwordInput.classList.remove('error-border');
-                
-                const targetUrl = "https://disornlaliw61-create.github.io/menu/"; // URL ปลายทาง
-                window.location.href = targetUrl;
-            } else {
-                // รหัสผิด: แสดงข้อความเตือน ขอบแดง และไม่เปลี่ยนหน้า
-                errorMsg.classList.remove('show');
-                void errorMsg.offsetWidth; // Trigger reflow เพื่อเล่นอนิเมชันสั่นใหม่
-                errorMsg.classList.add('show');
-                
-                usernameInput.classList.add('error-border');
-                passwordInput.classList.add('error-border');
-            }
-        }
-    </script>
+    <!-- เรียกใช้ JavaScript จากไฟล์ script.js แยกต่างหาก -->
+    <script src="script.js"></script>
 </body>
 </html>
