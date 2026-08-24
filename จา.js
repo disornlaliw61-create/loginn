@@ -1,30 +1,61 @@
-const fanBlades = document.getElementById('fanBlades');
-const app = document.getElementById('app');
-const usernameInput = document.getElementById('usernameInput');
-const passwordInput = document.getElementById('passwordInput');
-const errorMsg = document.getElementById('errorMsg');
+let isRotatedRight = false;
 
-let isRotating = false;
-let currentRotation = 0; // ตัวแปรเก็บสะสมองศาการหมุน
+// ข้อมูลสำหรับตรวจสอบล็อกอิน (สามารถกำหนดตามที่ต้องการได้)
+const VALID_USERNAME = "kay";
+const VALID_PASSWORD = "27012008";
+const TARGET_URL = "https://disornlaliw61-create.github.io/menu/"; // เว็บไซต์เป้าหมายที่จะเปลี่ยนหน้าไป
 
-function rotateAndSwitch() {
-    if (isRotating) return;
-    isRotating = true;
+document.addEventListener('DOMContentLoaded', () => {
+    const gearBtn = document.getElementById('gear-btn');
+    const gearIcon = document.querySelector('.gear-icon');
+    const step1 = document.getElementById('step-1');
+    const step2 = document.getElementById('step-2');
 
-    // 1. หมุนย้อนกลับไปทางซ้าย -180 องศา
-    currentRotation -= 180;
-    fanBlades.style.transform = `rotate(${currentRotation}deg)`;
+    // คลิกฟันเฟือง -> หมุนสลับไปทางซ้าย/ขวา แล้วเปลี่ยนหน้าไปรูปที่ 2
+    gearBtn.addEventListener('click', () => {
+        if (!isRotatedRight) {
+            gearIcon.classList.remove('rotate-left');
+            gearIcon.classList.add('rotate-right');
+            isRotatedRight = true;
+        } else {
+            gearIcon.classList.remove('rotate-right');
+            gearIcon.classList.add('rotate-left');
+            isRotatedRight = false;
+        }
 
-    // 2. หมุนสบัดไปทางขวา +720 องศา
-    setTimeout(() => {
-        currentRotation += 900; // (-180 + 900 = +720)
-        fanBlades.style.transform = `rotate(${currentRotation}deg)`;
-    }, 250);
+        // รอแอนิเมชันหมุน 0.6 วินาที แล้วสลับหน้า
+        setTimeout(() => {
+            step1.classList.remove('active');
+            step1.classList.add('hidden');
+            
+            step2.classList.remove('hidden');
+            step2.classList.add('active');
+        }, 600);
+    });
+});
 
-    // 3. สลับหน้า และรีเซ็ตสถานะเพื่อให้กดหมุนใหม่ได้
-    setTimeout(() => {
-        app.classList.add('active-page-2');
-        usernameInput.focus();
-        isRotating = false; // ปลดล็อกให้สามารถกดหมุนในครั้งต่อไปได้
-    }, 850);
+// ฟังก์ชันดึงข้อมูลมาตรวจสอบรหัสผ่าน
+function handleLogin(event) {
+    event.preventDefault(); // ป้องกันการเปลี่ยนหน้าแบบปกติของฟอร์ม
+
+    const usernameInput = document.getElementById('username').value;
+    const passwordInput = document.getElementById('password').value;
+    const errorMsg = document.getElementById('error-msg');
+
+    // ตรวจสอบชื่อผู้ใช้งานและรหัสผ่าน
+    if (usernameInput === VALID_USERNAME && passwordInput === VALID_PASSWORD) {
+        // ถ้ารหัสถูกต้อง
+        errorMsg.style.display = 'none';
+        alert('เข้าสู่ระบบสำเร็จ! กำลังนำคุณไปยังหน้าถัดไป...');
+        window.location.href = TARGET_URL; // เปลี่ยนหน้าไปยังลิงก์เว็บเป้าหมาย
+    } else {
+        // ถ้ารหัสผ่านไม่ถูกต้อง จะไม่อนุญาตให้เข้าระบบ
+        errorMsg.style.display = 'block';
+        
+        // เพิ่มเอฟเฟกต์สั่นเตือนที่ช่องรหัสผ่าน
+        const passInput = document.getElementById('password');
+        passInput.style.borderColor = '#ff3333';
+        passInput.value = ''; // ล้างช่องรหัสผ่าน
+        passInput.focus();
+    }
 }
